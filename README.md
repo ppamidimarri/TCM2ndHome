@@ -18,7 +18,7 @@ A Jetson Nano runs at the main home and a Pi 4B runs at the weekend home. Both d
 ## Network Requirements at Second Home
 
 * Fixed LAN IP address for the Pi at the second home
-* Dynamic DNS solution (e.g. NoIP) with a domain name for your second home (e.g. `second.home.com`)
+* Dynamic DNS solution (e.g. [NoIP](https://www.noip.com/)) with a domain name for your second home (e.g. `second.home.com`)
 * At the main router in your second home, forward port 22 to the Pi's fixed LAN IP address
 
 ## Instructions
@@ -31,6 +31,8 @@ A Jetson Nano runs at the main home and a Pi 4B runs at the weekend home. Both d
 5. `sudo apt update`
 6. `sudo apt upgrade`
 7. `sudo apt install git samba lsof`
+8. Install and configure the dynamic update client for your dynamic DNS provider (e.g. [NoIP DUC](https://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client/))
+9. Add the dynamic update client to your crontab or `/etc/rc.local` so it is started on boot (e.g. add `/usr/local/bin/noip2` before `exit 0` to `/etc/rc.local` if you are using NoIP)
 
 **B. Set up the link between your two homes**
 
