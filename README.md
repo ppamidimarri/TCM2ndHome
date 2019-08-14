@@ -1,2 +1,4 @@
 # TCM2ndHome
-Enhancement of my TeslaCamMerge project to support two home locations
+Enhancement of my [TeslaCamMerge project](https://github.com/ppamidimarri/TeslaCamMerge) to support two home locations
+
+
