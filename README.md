@@ -2,7 +2,7 @@
 
 This is an extension of my [TeslaCamMerge project](https://github.com/ppamidimarri/TeslaCamMerge) to support two home locations, with a main home and a weekend home. 
 
-A Jetson Nano runs at the main home and a Pi 4B runs at the weekend home. Both devices host an SMB share with the exact same credentials. When I park at the weekend home, the Pi Zero W in the car archives the clips, and then Jetson Nano at the main home pulls those files from the weekend home's Pi 4B and merges them.
+A Jetson Nano runs at the primary home and a Pi 4B runs at the second home. Both devices host an SMB share with the exact same credentials. When I park at the second home, the Pi Zero W in the car archives the clips, and then Jetson Nano at the primary home pulls those files from the second home's Pi 4B and merges them.
 
 ## Prerequisites
 
@@ -120,7 +120,7 @@ Perform all these steps on the device running TeslaCamMerge at your primary home
 2. `scp pi@second.home.com:/home/pi/TCM2ndHome/DownloadTC.py DownloadTC.py`
 3. `scp pi@second.home.com:/home/pi/TCM2ndHome/downloadTC.service downloadTC.service`
 4. `nano DownloadTC.py` and edit `SERVER_CREDENTIALS` and `SOURCE_PATH` to match second home setup
-5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID, `PROJECT_PATH` with the user's home directory, and SSD_MOUNT_POINT with the path to your `Footage` directory
+5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID, `PROJECT_PATH` with the user's home directory, and `SSD_MOUNT_POINT` with the path to your `Footage` directory
 6. `sudo cp downloadTC.service /lib/systemd/system`
 7. `sudo systemctl daemon-reload`
 8. `sudo systemctl enable downloadTC.service`
