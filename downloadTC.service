@@ -1,0 +1,14 @@
+[Unit]
+Description=Download dashcam footage from remote location
+After=network.target multi-user.target mergeTeslaCam.service
+RequiresMountsFor=SSD_MOUNT_POINT
+
+[Service]
+User=PROJECT_USER
+ExecStartPre=/bin/sleep 60
+ExecStart=PROJECT_PATH/TeslaCamMerge/DownloadTC.py
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=smbd.service
