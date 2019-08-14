@@ -12,7 +12,7 @@ import logging
 import TCMConstants
 
 SOURCE_PATH = '/home/pi/Upload'
-SERVER_CREDENTIALS = 'pi@mv.pamidimarri.com'
+SERVER_CREDENTIALS = 'pi@second.home.com'
 SCP_PATH = '/usr/bin/scp'
 SSH_PATH = '/usr/bin/ssh'
 
