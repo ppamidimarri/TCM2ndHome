@@ -4,7 +4,7 @@ After=network.target systemd-user-session.service
 
 [Service]
 User=pi
-ExecStart=/home/pi/uploader/TC2Stager.py
+ExecStart=/home/pi/TCM2ndHome/TC2Stager.py
 Restart=on-failure
 RestartSec=60
 
