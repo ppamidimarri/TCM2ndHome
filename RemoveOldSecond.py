@@ -20,7 +20,7 @@ VIDEO_PATHS = []
 ALL_VIDEO_REGEX = "{0}|fast|full).mp4".format(TCConstants.FILENAME_REGEX[:-5])
 ALL_VIDEO_PATTERN = re.compile(ALL_VIDEO_REGEX)
 
-logger_name = 'RemoveOld'
+logger_name = 'RemoveOld2'
 logger = logging.getLogger(logger_name)
 logger.setLevel(TCConstants.LOG_LEVEL)
 
