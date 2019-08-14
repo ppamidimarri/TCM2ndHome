@@ -4,6 +4,9 @@
 # server with SERVER_CREDENTIALS and saves them to the
 # "RAW_PATH" location.
 
+# This script should be run on the same device where TeslaCamMerge
+# is running. It just pulls clips from the second home for processing.
+
 import os
 import time
 import subprocess
