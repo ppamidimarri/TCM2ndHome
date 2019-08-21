@@ -20,24 +20,15 @@ VIDEO_PATHS = []
 ALL_VIDEO_REGEX = "{0}|fast|full).mp4".format(TCConstants.FILENAME_REGEX[:-5])
 ALL_VIDEO_PATTERN = re.compile(ALL_VIDEO_REGEX)
 
-logger_name = 'RemoveOld2'
-logger = logging.getLogger(logger_name)
-logger.setLevel(TCConstants.LOG_LEVEL)
+logger = TCConstants.get_logger('RemoveOldSecond')
 
 def main():
-	fh = logging.FileHandler(TCConstants.LOG_PATH + logger_name + TCConstants.LOG_EXTENSION)
-	fh.setLevel(TCConstants.LOG_LEVEL)
-	formatter = logging.Formatter(TCConstants.LOG_FORMAT)
-	fh.setFormatter(formatter)
-	logger.addHandler(fh)
-	logger.info("Starting up")
-
-	signal.signal(signal.SIGINT, exit_gracefully)
-	signal.signal(signal.SIGTERM, exit_gracefully)
+	signal.signal(signal.SIGINT, TCConstants.exit_gracefully)
+	signal.signal(signal.SIGTERM, TCConstants.exit_gracefully)
 
 	if not have_required_permissions():
 		logger.error("Missing some required permissions, exiting")
-		exit_gracefully(TCConstants.SPECIAL_EXIT_CODE, None)
+		TCConstants.exit_gracefully(TCConstants.SPECIAL_EXIT_CODE, None)
 
 	while True:
 		for directory in next(os.walk(SOURCE_PATH))[1]:
@@ -62,10 +53,6 @@ def have_required_permissions():
 			path, True, logger)
 	return have_perms and TCConstants.check_permissions(
 		SOURCE_PATH, True, logger)
-
-def exit_gracefully(signum, frame):
-	logger.info("Received signal number {0}, exiting.".format(signum))
-	exit(signum)
 
 ### Loop functions ###
 
