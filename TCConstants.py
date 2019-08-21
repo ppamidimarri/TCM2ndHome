@@ -22,6 +22,14 @@ LOG_EXTENSION = '.log'
 LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 LOG_LEVEL = logging.INFO
 
+# Logging settings for TimedRotatingFileHandler, refer to:
+# https://docs.python.org/3.6/library/logging.handlers.html#timedrotatingfilehandler
+# for details about the three supported options. The default
+# is to rotate once a day and keep ten days' worth of logs.
+LOG_WHEN = 'd'
+LOG_INTERVAL = 1
+LOG_BACKUP_COUNT = 10
+
 # Paths of installed software, including name of the application
 LSOF_PATH = '/usr/bin/lsof -t'							# Verify with: which lsof
 
@@ -87,3 +95,29 @@ def check_file_for_write(file, logger):
 		return False
 	else:
 		return True
+
+def get_logger(filename):
+	logger = logging.getLogger(filename)
+	logger.setLevel(LOG_LEVEL)
+	fh = logging.handlers.TimedRotatingFileHandler(
+		LOG_PATH + filename + LOG_EXTENSION,
+		when=LOG_WHEN, interval=LOG_INTERVAL,
+		backupCount=LOG_BACKUP_COUNT)
+	fh.setLevel(LOG_LEVEL)
+	formatter = logging.Formatter(LOG_FORMAT)
+	fh.setFormatter(formatter)
+	logger.addHandler(fh)
+	logger.info("Starting up")
+	return logger
+
+def exit_gracefully(signum, frame):
+	top_frame = frame.f_back
+	while top_frame:
+		if top_frame.f_back:
+			top_frame = top_frame.f_back
+		else:
+			break
+	caller = inspect.getframeinfo(top_frame).filename
+	name = caller.rsplit('/', 1)[1][:-3] # Remove path, remove ".py" at the end
+	logging.getLogger(name).info("Received signal {0}, exiting".format(signum))
+	exit(signum)
