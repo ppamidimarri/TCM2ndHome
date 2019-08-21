@@ -19,24 +19,15 @@ SERVER_CREDENTIALS = 'pi@second.home.com'
 SCP_PATH = '/usr/bin/scp'
 SSH_PATH = '/usr/bin/ssh'
 
-logger_name = 'DownloadTC'
-logger = logging.getLogger(logger_name)
-logger.setLevel(TCMConstants.LOG_LEVEL)
+logger = TCMConstants.get_logger('DownloadTC')
 
 def main():
-	fh = logging.FileHandler(TCMConstants.LOG_PATH + logger_name + TCMConstants.LOG_EXTENSION)
-	fh.setLevel(TCMConstants.LOG_LEVEL)
-	formatter = logging.Formatter(TCMConstants.LOG_FORMAT)
-	fh.setFormatter(formatter)
-	logger.addHandler(fh)
-	logger.info("Starting up")
-
-	signal.signal(signal.SIGINT, exit_gracefully)
-	signal.signal(signal.SIGTERM, exit_gracefully)
+	signal.signal(signal.SIGINT, TCMConstants.exit_gracefully)
+	signal.signal(signal.SIGTERM, TCMConstants.exit_gracefully)
 
 	if not have_required_permissions():
 		logger.error("Missing some required permissions, exiting")
-		exit_gracefully(TCMConstants.SPECIAL_EXIT_CODE, None)
+		TCMConstants.exit_gracefully(TCMConstants.SPECIAL_EXIT_CODE, None)
 
 	while True:
 		for item in list_remote_files():
@@ -52,10 +43,6 @@ def main():
 def have_required_permissions():
 	return TCMConstants.check_permissions(
 		TCMConstants.RAW_PATH, True, logger)
-
-def exit_gracefully(signum, frame):
-	logger.info("Received signal number {0}, exiting.".format(signum))
-	exit(signum)
 
 ### Loop functions ###
 
