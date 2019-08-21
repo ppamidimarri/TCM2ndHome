@@ -2,6 +2,7 @@ import logging
 import os
 import subprocess
 import re
+import sys
 
 # Location of CIFS share. MUST include trailing /. PROJECT_USER must have read-write permissions.
 SHARE_PATH = '/samba/fjnuser/'
@@ -97,10 +98,11 @@ def check_file_for_write(file, logger):
 		return True
 
 def get_logger(filename):
-	logger = logging.getLogger(filename)
+	basename = get_basename()
+	logger = logging.getLogger(basename)
 	logger.setLevel(LOG_LEVEL)
 	fh = logging.handlers.TimedRotatingFileHandler(
-		LOG_PATH + filename + LOG_EXTENSION,
+		LOG_PATH + basename + LOG_EXTENSION,
 		when=LOG_WHEN, interval=LOG_INTERVAL,
 		backupCount=LOG_BACKUP_COUNT)
 	fh.setLevel(LOG_LEVEL)
@@ -111,13 +113,8 @@ def get_logger(filename):
 	return logger
 
 def exit_gracefully(signum, frame):
-	top_frame = frame.f_back
-	while top_frame:
-		if top_frame.f_back:
-			top_frame = top_frame.f_back
-		else:
-			break
-	caller = inspect.getframeinfo(top_frame).filename
-	name = caller.rsplit('/', 1)[1][:-3] # Remove path, remove ".py" at the end
-	logging.getLogger(name).info("Received signal {0}, exiting".format(signum))
+	logging.getLogger(get_basename()).info("Received signal {0}, exiting".format(signum))
 	exit(signum)
+
+def get_basename():
+	return os.path.splitext(os.path.basename(sys.argv[0]))[0]
