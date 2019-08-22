@@ -9,7 +9,7 @@ import time
 import re
 import TCConstants
 
-logger = TCConstants.get_logger('TC2Stager')
+logger = TCConstants.get_logger()
 
 def main():
 	signal.signal(signal.SIGINT, TCConstants.exit_gracefully)

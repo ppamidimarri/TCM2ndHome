@@ -19,7 +19,7 @@ SERVER_CREDENTIALS = 'pi@second.home.com'
 SCP_PATH = '/usr/bin/scp'
 SSH_PATH = '/usr/bin/ssh'
 
-logger = TCMConstants.get_logger('DownloadTC')
+logger = TCMConstants.get_logger()
 
 def main():
 	signal.signal(signal.SIGINT, TCMConstants.exit_gracefully)
