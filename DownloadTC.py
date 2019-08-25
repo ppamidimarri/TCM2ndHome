@@ -34,6 +34,7 @@ def main():
 			file = item.decode("UTF-8")
 			logger.debug("Found remote file {0}".format(file))
 			if get_remote_file(file):
+				logger.info("Downloaded {0}".format(file))
 				remove_source_file(file)
 
 		time.sleep(TCMConstants.SLEEP_DURATION)
