@@ -11,7 +11,6 @@ import os
 import time
 import subprocess
 import signal
-import logging
 import TCMConstants
 
 SOURCE_PATH = '/home/pi/Upload'
