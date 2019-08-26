@@ -116,11 +116,11 @@ Perform all these steps on the Pi at your second home.
 
 Perform all these steps on the device running TeslaCamMerge at your primary home.
 
-1. `cd ~`
+1. `cd ~/TeslaCamMerge`
 2. `scp pi@second.home.com:/home/pi/TCM2ndHome/DownloadTC.py DownloadTC.py`
 3. `scp pi@second.home.com:/home/pi/TCM2ndHome/downloadTC.service downloadTC.service`
 4. `nano DownloadTC.py` and edit `SERVER_CREDENTIALS` and `SOURCE_PATH` to match second home setup
-5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID, `PROJECT_PATH` with the user's home directory, and `SSD_MOUNT_POINT` with the path to your `Footage` directory
+5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID, `PROJECT_PATH` with the user's home directory, and `SSD_MOUNT_POINT` with the path to your `Footage` directory (alternatively, you can run `python3 CreateServiceFiles.py` to get these changes done automatically)
 6. `sudo cp downloadTC.service /lib/systemd/system`
 7. `sudo systemctl daemon-reload`
 8. `sudo systemctl enable downloadTC.service`
