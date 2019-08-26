@@ -38,7 +38,7 @@ def main():
 
 def have_required_permissions():
 	return TCMConstants.check_permissions(
-		TCMConstants.RAW_PATH, True, logger)
+		TCMConstants.RAW_PATH, True)
 
 ### Loop functions ###
 
