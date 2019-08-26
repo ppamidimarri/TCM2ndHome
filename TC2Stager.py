@@ -4,7 +4,6 @@ import logging
 import os
 import subprocess
 import shutil
-import signal
 import time
 import re
 import TCConstants
@@ -12,9 +11,6 @@ import TCConstants
 logger = TCConstants.get_logger()
 
 def main():
-	signal.signal(signal.SIGINT, TCConstants.exit_gracefully)
-	signal.signal(signal.SIGTERM, TCConstants.exit_gracefully)
-
 	if not have_required_permissions():
 		logger.error("Missing some required permissions, exiting")
 		TCConstants.exit_gracefully(TCConstants.SPECIAL_EXIT_CODE, None)
