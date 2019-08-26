@@ -49,7 +49,8 @@ SPECIAL_EXIT_CODE = 115
 
 # Common functions
 
-def check_permissions(path, test_write, logger):
+def check_permissions(path, test_write):
+	logger = logging.getLogger(get_basename())
 	if os.access(path, os.F_OK):
 		logger.debug("Path {0} exists".format(path))
 		if os.access(path, os.R_OK):
@@ -70,14 +71,15 @@ def check_permissions(path, test_write, logger):
 		logger.error("Path {0} does not exist".format(path))
 		return False
 
-def check_file_for_read(file, logger):
+def check_file_for_read(file):
 	if os.access(file, os.F_OK):
-		return not file_being_written(file, logger)
+		return not file_being_written(file)
 	else:
-		logger.debug("File {0} does not exist".format(file))
+		logging.getLogger(get_basename()).debug("File {0} does not exist".format(file))
 		return False
 
-def file_being_written(file, logger):
+def file_being_written(file):
+	logger = logging.getLogger(get_basename())
 	completed = subprocess.run("{0} {1}".format(LSOF_PATH, file), shell=True,
 		stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	if completed.stderr:
@@ -92,9 +94,9 @@ def file_being_written(file, logger):
 		else:
 			return False
 
-def check_file_for_write(file, logger):
+def check_file_for_write(file):
 	if os.access(file, os.F_OK):
-		logger.debug("File {0} exists".format(file))
+		logging.getLogger(get_basename()).debug("File {0} exists".format(file))
 		return False
 	else:
 		return True
