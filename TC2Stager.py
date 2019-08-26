@@ -29,14 +29,14 @@ def main():
 
 def have_required_permissions():
 	return TCConstants.check_permissions(
-		TCConstants.SHARE_PATH, True, logger) and TCConstants.check_permissions(
-		TCConstants.UPLOAD_PATH, True, logger)
+		TCConstants.SHARE_PATH, True) and TCConstants.check_permissions(
+		TCConstants.UPLOAD_PATH, True)
 
 ### Loop functions ###
 
 def move_file(file):
 	logger.info("Moving file {0}".format(file))
-	if TCConstants.check_file_for_read(file, logger):
+	if TCConstants.check_file_for_read(file):
 		try:
 			shutil.move(file, TCConstants.UPLOAD_PATH)
 			logger.debug("Moved file {0}".format(file))
