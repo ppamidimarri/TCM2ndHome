@@ -10,7 +10,6 @@
 import os
 import time
 import subprocess
-import signal
 import TCMConstants
 
 SOURCE_PATH = '/home/pi/Upload'
@@ -21,9 +20,6 @@ SSH_PATH = '/usr/bin/ssh'
 logger = TCMConstants.get_logger()
 
 def main():
-	signal.signal(signal.SIGINT, TCMConstants.exit_gracefully)
-	signal.signal(signal.SIGTERM, TCMConstants.exit_gracefully)
-
 	if not have_required_permissions():
 		logger.error("Missing some required permissions, exiting")
 		TCMConstants.exit_gracefully(TCMConstants.SPECIAL_EXIT_CODE, None)
