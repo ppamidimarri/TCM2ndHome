@@ -4,6 +4,7 @@ import os
 import subprocess
 import re
 import sys
+import signal
 
 # Location of CIFS share. MUST include trailing /. PROJECT_USER must have read-write permissions.
 SHARE_PATH = '/samba/fjnuser/'
@@ -98,6 +99,10 @@ def check_file_for_write(file, logger):
 	else:
 		return True
 
+def exit_gracefully(signum, frame):
+	logging.getLogger(get_basename()).info("Received signal {0}, exiting".format(signum))
+	exit(signum)
+
 def get_logger():
 	basename = get_basename()
 	logger = logging.getLogger(basename)
@@ -111,11 +116,9 @@ def get_logger():
 	fh.setFormatter(formatter)
 	logger.addHandler(fh)
 	logger.info("Starting up")
+	signal.signal(signal.SIGINT, exit_gracefully)
+	signal.signal(signal.SIGTERM, exit_gracefully)
 	return logger
-
-def exit_gracefully(signum, frame):
-	logging.getLogger(get_basename()).info("Received signal {0}, exiting".format(signum))
-	exit(signum)
 
 def get_basename():
 	return os.path.splitext(os.path.basename(sys.argv[0]))[0]
