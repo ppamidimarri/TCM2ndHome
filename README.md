@@ -106,11 +106,15 @@ Perform all these steps on the Pi at your second home.
 7. Check `TCConstants.py` to make sure the values match your environment
 8. `sudo cp removeOldSecond.service /lib/systemd/system`
 9. `sudo cp tc2Stager.service /lib/systemd/system`
-10. `sudo systemctl daemon-reload`
-11. `sudo systemctl enable removeOldSecond.service`
-12. `sudo systemctl enable tc2Stager.service`
-13. `sudo reboot`
-14. Once the Pi boots up, check `systemctl status tc2Stager.service` and `systemctl status removeOldSecond.service` to see that both are running
+10. `sudo cp tcm2.service /lib/systemd/system`
+11. `sudo systemctl daemon-reload`
+12. `sudo systemctl enable removeOldSecond.service`
+13. `sudo systemctl enable tc2Stager.service`
+14. `sudo systemctl enable tcm2.service`
+15. `sudo reboot`
+16. Once the Pi boots up, check `systemctl status tcm2.service` see that your services are running
+
+You can stop or start the `removeOldSecond` and `tc2Stager` services together by stopping or starting `tcm2`. You can stop or start them separately as well.
 
 **E. Install python script and service at your primary home**
 
