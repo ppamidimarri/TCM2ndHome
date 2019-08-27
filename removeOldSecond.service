@@ -1,6 +1,7 @@
 [Unit]
 Description=Remove old empty directories from CIFS share path
-After=network.target systemd-user-session.service
+PartOf=tcm2.service
+After=tcm2.service
 
 [Service]
 User=pi
@@ -9,4 +10,4 @@ Restart=on-failure
 RestartSec=60
 
 [Install]
-WantedBy=smbd.service
+WantedBy=tcm2.service
