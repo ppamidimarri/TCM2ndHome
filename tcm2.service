@@ -1,0 +1,12 @@
+[Unit]
+Description=TCM2ndHome application extending TeslaCamMerge to second home
+After=network.target multi-user.target
+
+[Service]
+User=pi
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=smbd.service
