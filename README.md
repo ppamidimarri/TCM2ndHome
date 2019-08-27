@@ -108,11 +108,11 @@ Perform all these steps on the Pi at your second home.
 9. `sudo cp tc2Stager.service /lib/systemd/system`
 10. `sudo cp tcm2.service /lib/systemd/system`
 11. `sudo systemctl daemon-reload`
-12. `sudo systemctl enable removeOldSecond.service`
-13. `sudo systemctl enable tc2Stager.service`
-14. `sudo systemctl enable tcm2.service`
+12. `sudo systemctl enable removeOldSecond`
+13. `sudo systemctl enable tc2Stager`
+14. `sudo systemctl enable tcm2`
 15. `sudo reboot`
-16. Once the Pi boots up, check `systemctl status tcm2.service` see that your services are running
+16. Once the Pi boots up, check `systemctl status tcm2` see that your services are running
 
 You can stop or start the `removeOldSecond` and `tc2Stager` services together by stopping or starting `tcm2`. You can stop or start them separately as well.
 
@@ -124,10 +124,12 @@ Perform all these steps on the device running TeslaCamMerge at your primary home
 2. `scp pi@second.home.com:/home/pi/TCM2ndHome/DownloadTC.py DownloadTC.py`
 3. `scp pi@second.home.com:/home/pi/TCM2ndHome/downloadTC.service downloadTC.service`
 4. `nano DownloadTC.py` and edit `SERVER_CREDENTIALS` and `SOURCE_PATH` to match second home setup
-5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID, `PROJECT_PATH` with the user's home directory, and `SSD_MOUNT_POINT` with the path to your `Footage` directory (alternatively, you can run `python3 CreateServiceFiles.py` to get these changes done automatically)
+5. `nano downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID and `PROJECT_PATH` with the user's home directory (alternatively, you can run `python3 CreateServiceFiles.py` to get these changes done automatically)
 6. `sudo cp downloadTC.service /lib/systemd/system`
 7. `sudo systemctl daemon-reload`
-8. `sudo systemctl enable downloadTC.service`
+8. `sudo systemctl enable downloadTC`
 9. `sudo reboot`
+
+The service `downloadTC` now becomes part of the service group `tcm` that you setup when you installed `TeslaCamMerge` at your primary home. You can start and stop it individually, or with the rest of the group. 
 
 Now your setup is complete! 
