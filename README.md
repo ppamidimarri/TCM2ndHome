@@ -104,15 +104,13 @@ Perform all these steps on the Pi at your second home.
 5. `cd TCM2ndHome`
 6. `chmod +x *.py`
 7. Check `TCConstants.py` to make sure the values match your environment
-8. `sudo cp removeOldSecond.service /lib/systemd/system`
-9. `sudo cp tc2Stager.service /lib/systemd/system`
-10. `sudo cp tcm2.service /lib/systemd/system`
-11. `sudo systemctl daemon-reload`
-12. `sudo systemctl enable tcm2-removeOldSecond`
-13. `sudo systemctl enable tcm2-stager`
-14. `sudo systemctl enable tcm2`
-15. `sudo reboot`
-16. Once the Pi boots up, check `systemctl status tcm2-*` and verify that the services are shown as `active (running)`
+8. `sudo cp tcm2*.service /lib/systemd/system`
+9. `sudo systemctl daemon-reload`
+10. `sudo systemctl enable tcm2-removeOldSecond`
+11. `sudo systemctl enable tcm2-stager`
+12. `sudo systemctl enable tcm2`
+13. `sudo reboot`
+14. Once the Pi boots up, check `systemctl status tcm2-*` and verify that the services are shown as `active (running)`
 
 You can stop or start the `tcm2-removeOldSecond` and `tcm2-stager` services together by stopping or starting `tcm2`. You can stop or start them separately as well.
 
@@ -130,6 +128,6 @@ Perform all these steps on the device running TeslaCamMerge at your primary home
 8. `sudo systemctl enable tcm-downloadTC`
 9. `sudo reboot`
 
-The service `downloadTC` now becomes part of the service group `tcm` that you setup when you installed `TeslaCamMerge` at your primary home. You can start and stop it individually, or with the rest of the group. 
+The service `tcm-downloadTC` now becomes part of the service group `tcm` that you setup when you installed `TeslaCamMerge` at your primary home. You can start and stop it individually, or with the rest of the group. 
 
 Now your setup is complete! 
