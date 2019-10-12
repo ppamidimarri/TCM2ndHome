@@ -12,6 +12,11 @@ SHARE_PATH = '/samba/fjnuser/'
 # Location for uploading
 UPLOAD_PATH = '/home/pi/Upload/'
 
+# TeslaCam input folders. These are the root folders in the
+# TeslaCam share (e.g. 'SavedClips', 'SentryClips') in which timestamp
+# folders are placed by TeslaCam
+FOOTAGE_FOLDERS = ['SavedClips', 'SentryClips']
+
 # Number of days to keep videos: applies to raw, full and fast videos.
 # Videos that are older than these and in the FULL_PATH, FAST_PATH and
 # RAW_PATH locations are automatically deleted by removeOld.service
@@ -40,7 +45,7 @@ LSOF_PATH = '/usr/bin/lsof -t'							# Verify with: which lsof
 
 # Characteristics of filenames output by TeslaCam
 FILENAME_TIMESTAMP_FORMAT = '%Y-%m-%d_%H-%M-%S'
-FILENAME_REGEX  = '(\d{4}(-\d\d){2}_(\d\d-){3})(right_repeater|front|left_repeater).mp4'
+FILENAME_REGEX  = '(\d{4}(-\d\d){2}_(\d\d-){3})(right_repeater|front|left_repeater|back).mp4'
 FILENAME_PATTERN = re.compile(FILENAME_REGEX)
 
 # Application management constants
