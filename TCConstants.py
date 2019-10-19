@@ -6,8 +6,21 @@ import re
 import sys
 import signal
 
-# Location of CIFS share. MUST include trailing /. PROJECT_USER must have read-write permissions.
-SHARE_PATH = '/samba/fjnuser/'
+# Locations of CIFS shares. All paths MUST include trailing /. PROJECT_USER
+# must have read-write permissions to all paths. List MUST contain at least one
+# path. If you have more than one Tesla, set up one CIFS share location for
+# each car, and add all of them to this list. The order of paths here should
+# match the order of CAR_LIST above.
+SHARE_PATHS = ['/samba/fjnuser/', '/samba/fjnuser2/']
+
+# This app can handle footage from multiple cars with Tesla dashcam features.
+# If you have more than one Tesla, set MULTI_CAR to True and set up the names
+# of the folders for the footage in CAR_LIST. For example, you may want paths
+# like '/home/user/Footage/Car1/' and '/home/user/Footage/Car2/' as the paths
+# for the footage from each car. Then CAR_LIST should be ['Car1', 'Car2'].
+# The order of cars here should match the order of SHARE_PATHS below.
+MULTI_CAR = True
+CAR_LIST = ['MSM', 'PW']
 
 # Location for uploading
 UPLOAD_PATH = '/home/pi/Upload/'

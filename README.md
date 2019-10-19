@@ -4,6 +4,8 @@ This is an extension of my [TeslaCamMerge project](https://github.com/ppamidimar
 
 A Jetson Nano runs at the primary home and a Pi 4B runs at the second home. Both devices host an SMB share with the exact same credentials. When I park at the second home, the Pi Zero W in the car archives the clips, and then Jetson Nano at the primary home pulls those files from the second home's Pi 4B and merges them.
 
+Update on October 18: This project now support multiple Tesla vehicles. See the TeslaCamMerge project for details on how to set it up.
+
 ## Prerequisites
 
 * [TeslaCamMerge](https://github.com/ppamidimarri/TeslaCamMerge) installed and working at your primary home, using a Jetson Nano or Raspberry Pi 4B

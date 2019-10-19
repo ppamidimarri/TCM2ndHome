@@ -25,56 +25,68 @@ def main():
 		TCMConstants.exit_gracefully(TCMConstants.SPECIAL_EXIT_CODE, None)
 
 	while True:
-		for folder in TCMConstants.FOOTAGE_FOLDERS:
-			for item in list_remote_files(folder):
-				file = item.decode("UTF-8")
-				logger.debug("Found remote file {0}".format(file))
-				if get_remote_file(file, folder):
-					logger.info("Downloaded {0}".format(file))
-					remove_source_file(file, folder)
+		if TCMConstants.MULTI_CAR:
+			for car in TCMConstants.CAR_LIST:
+				download_footage(f"{car}/")
+		else:
+			download_footage("")
 
 		time.sleep(TCMConstants.SLEEP_DURATION)
 
 ### Startup functions ###
 
 def have_required_permissions():
-	retVal = True
+	have_perms = True
+	if TCMConstants.MULTI_CAR:
+		for car in TCMConstants.CAR_LIST:
+			have_perms = have_perms and check_folder_perms(f"{car}/")
+	else:
+		have_perms = have_perms and check_folder_perms("")
+	return have_perms
+
+def check_folder_perms(car_path):
+	have_perms = True
 	for folder in TCMConstants.FOOTAGE_FOLDERS:
-		retVal = retVal and TCMConstants.check_permissions("{0}{1}/{2}".format(TCMConstants.FOOTAGE_PATH, folder, TCMConstants.RAW_FOLDER), True)
-	return retVal
+		have_perms = have_perms and TCMConstants.check_permissions(f"{TCMConstants.FOOTAGE_PATH}{car_path}{folder}/{TCMConstants.RAW_FOLDER}", True)
+	return have_perms
 
 ### Loop functions ###
 
+def download_footage(car_path):
+	for folder in TCMConstants.FOOTAGE_FOLDERS:
+		for item in list_remote_files(f"{car_path}{folder}"):
+			file = item.decode("UTF-8")
+			logger.debug(f"Found remote file {file}")
+			if get_remote_file(file, f"{car_path}{folder}"):
+				logger.info(f"Downloaded {file}")
+				remove_source_file(file, f"{car_path}{folder}")
+
 def get_remote_file(file, folder):
-	command = "{0} {1}:{2}/{3}/{4} {5}{3}/{6}".format(SCP_PATH, SERVER_CREDENTIALS,
-		SOURCE_PATH, folder, file, TCMConstants.FOOTAGE_PATH, TCMConstants.RAW_FOLDER)
-	logger.debug("Executing command: {0}".format(command))
+	command = f"{SCP_PATH} {SERVER_CREDENTIALS}:{SOURCE_PATH}/{folder}/{file} {TCMConstants.FOOTAGE_PATH}{folder}/{TCMConstants.RAW_FOLDER}"
+	logger.debug(f"Executing command: {command}")
 	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	if completed.stderr or completed.returncode != 0:
-		logger.error("Error running scp command {0}, returncode: {3}, stdout: {1}, stderr: {2}".format(
-			command, completed.stdout, completed.stderr, completed.returncode))
+		logger.error(f"Error running scp command: {command}, returncode: {completed.returncode}, stdout: {completed.stdout}, stderr: {completed.stderr}")
 		return False
 	else:
 		return True
 
 def remove_source_file(file, folder):
-	command = "{0} {1} rm {2}/{3}/{4}".format(SSH_PATH, SERVER_CREDENTIALS, SOURCE_PATH, folder, file)
-	logger.debug("Executing command: {0}".format(command))
+	command = f"{SSH_PATH} {SERVER_CREDENTIALS} rm {SOURCE_PATH}/{folder}/{file}"
+	logger.debug(f"Executing command: {command}")
 	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	if completed.stderr or completed.returncode != 0:
-		logger.error("Error running ssh command {0}, returncode: {3}, stdout: {1}, stderr: {2}".format(
-			command, completed.stdout, completed.stderr, completed.returncode))
+		logger.error(f"Error running ssh command: {command}, returncode: {completed.returncode}, stdout: {completed.stdout}, stderr: {completed.stderr}")
 
 def list_remote_files(folder):
-	command = "{0} {1} ls {2}/{3}".format(SSH_PATH, SERVER_CREDENTIALS, SOURCE_PATH, folder)
-	logger.debug("Executing command: {0}".format(command))
+	command = f"{SSH_PATH} {SERVER_CREDENTIALS} ls {SOURCE_PATH}/{folder}"
+	logger.debug(f"Executing command: {command}".format(command))
 	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	if completed.stderr or completed.returncode != 0:
-		logger.error("Error running ssh command {0}, returncode: {3}, stdout: {1}, stderr: {2}".format(
-			command, completed.stdout, completed.stderr, completed.returncode))
+		logger.error(f"Error running ssh command: {command}, returncode: {completed.returncode}, stdout: {completed.stdout}, stderr: {completed.stderr}")
 		return []
 	else:
 		return completed.stdout.split()
