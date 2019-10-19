@@ -11,7 +11,7 @@ import TCConstants
 logger = TCConstants.get_logger()
 
 def main():
-	if len(TCMConstants.SHARE_PATHS) <= 0:
+	if len(TCConstants.SHARE_PATHS) <= 0:
 		logger.error("No share paths defined, please fix in TCConstants.py and restart.")
 		TCConstants.exit_gracefully(TCConstants.SPECIAL_EXIT_CODE, None)
 	if not have_required_permissions():
@@ -26,7 +26,7 @@ def main():
 						if file_has_proper_name(name):
 							sub_path = folder
 							if TCConstants.MULTI_CAR:
-								sub_path = f"{TCConstants.CAR_LIST[index]}{folder}"
+								sub_path = f"{TCConstants.CAR_LIST[index]}/{folder}"
 							move_file(os.path.join(root, name), sub_path)
 						else:
 							logger.debug(f"File '{name}' has invalid name, skipping")
@@ -48,8 +48,8 @@ def check_folder_perms(car_path):
 	have_perms = True
 	for folder in TCConstants.FOOTAGE_FOLDERS:
 		for share in TCConstants.SHARE_PATHS:
-			have_perms = have_perms and TCConstants.check_permissions("f{share}{folder}", True)
-		have_perms = have_perms and TCConstants.check_permissions("f{TCConstants.UPLOAD_PATH}{car_path}{folder}", True)
+			have_perms = have_perms and TCConstants.check_permissions(f"{share}{folder}", True)
+		have_perms = have_perms and TCConstants.check_permissions(f"{TCConstants.UPLOAD_PATH}{car_path}{folder}", True)
 	return have_perms
 
 ### Loop functions ###
