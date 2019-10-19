@@ -55,11 +55,11 @@ def check_folder_perms(car_path):
 ### Loop functions ###
 
 def move_file(file, folder):
-	logger.info(f"Moving file {file} in {folder}")
+	logger.info(f"Moving file {file} into {folder}")
 	if TCConstants.check_file_for_read(file):
 		try:
 			shutil.move(file, f"{TCConstants.UPLOAD_PATH}{folder}")
-			logger.debug(f"Moved file {file} in {folder}")
+			logger.debug(f"Moved file {file} into {folder}")
 		except:
 			logger.error(f"Failed to move {file} in {folder}")
 	else:

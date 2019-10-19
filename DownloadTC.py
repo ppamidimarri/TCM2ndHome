@@ -58,7 +58,7 @@ def download_footage(car_path):
 			file = item.decode("UTF-8")
 			logger.debug(f"Found remote file {file}")
 			if get_remote_file(file, f"{car_path}{folder}"):
-				logger.info(f"Downloaded {file}")
+				logger.info(f"Downloaded {file} into {car_path}")
 				remove_source_file(file, f"{car_path}{folder}")
 
 def get_remote_file(file, folder):
