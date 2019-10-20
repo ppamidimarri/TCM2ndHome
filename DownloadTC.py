@@ -100,7 +100,7 @@ def list_remote_files(folder):
 		return completed.stdout.split()
 
 def rsync_log_file(file):
-	command = f"{RSYNC_PATH} -e ssh {SERVER_CREDENTIALS}:{REMOTE_LOG_PATH}/{file} {TCMConstants.LOG_PATH}{file}"
+	command = f"{RSYNC_PATH} -ae ssh {SERVER_CREDENTIALS}:{REMOTE_LOG_PATH}/{file} {TCMConstants.LOG_PATH}{file}"
 	logger.debug(f"Executing command: {command}")
 	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
