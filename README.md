@@ -118,15 +118,16 @@ You can stop or start the `tcm2-removeOldSecond` and `tcm2-stager` services toge
 
 Perform all these steps on the device running TeslaCamMerge at your primary home.
 
-1. `cd ~/TeslaCamMerge`
-2. `scp pi@second.home.com:/home/pi/TCM2ndHome/DownloadTC.py DownloadTC.py`
-3. `scp pi@second.home.com:/home/pi/TCM2ndHome/tcm-downloadTC.service tcm-downloadTC.service`
-4. `nano DownloadTC.py` and edit `SERVER_CREDENTIALS` and `SOURCE_PATH` to match second home setup
-5. `nano tcm-downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID and `PROJECT_PATH` with the user's home directory (alternatively, you can run `python3 CreateServiceFiles.py` to get these changes done automatically using a script from the `TeslaCamMerge` project)
-6. `sudo cp tcm-downloadTC.service /lib/systemd/system`
-7. `sudo systemctl daemon-reload`
-8. `sudo systemctl enable tcm-downloadTC`
-9. `sudo reboot`
+1. `sudo apt install rsync`
+2. `cd ~/TeslaCamMerge`
+3. `scp pi@second.home.com:/home/pi/TCM2ndHome/DownloadTC.py DownloadTC.py`
+4. `scp pi@second.home.com:/home/pi/TCM2ndHome/tcm-downloadTC.service tcm-downloadTC.service`
+5. `nano DownloadTC.py` and edit `SERVER_CREDENTIALS` and `SOURCE_PATH` to match second home setup
+6. `nano tcm-downloadTC.service` and replace `PROJECT_USER` with your UNIX user ID and `PROJECT_PATH` with the user's home directory (alternatively, you can run `python3 CreateServiceFiles.py` to get these changes done automatically using a script from the `TeslaCamMerge` project)
+7. `sudo cp tcm-downloadTC.service /lib/systemd/system`
+8. `sudo systemctl daemon-reload`
+9. `sudo systemctl enable tcm-downloadTC`
+10. `sudo reboot`
 
 The service `tcm-downloadTC` now becomes part of the service group `tcm` that you setup when you installed `TeslaCamMerge` at your primary home. You can start and stop it individually, or with the rest of the group. 
 
