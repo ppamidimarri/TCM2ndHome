@@ -13,9 +13,13 @@ import subprocess
 import TCMConstants
 
 SOURCE_PATH = '/home/pi/Upload'
+REMOTE_LOG_PATH = '/home/pi/log'
 SERVER_CREDENTIALS = 'pi@mv.pamidimarri.com'
 SCP_PATH = '/usr/bin/scp'
 SSH_PATH = '/usr/bin/ssh'
+RSYNC_PATH = '/usr/bin/rsync'
+SYNC_LOGS = True
+LOG_NAMES_TO_RSYNC = ['TC2Stager.log', 'RemoveOldSecond.log']
 
 logger = TCMConstants.get_logger()
 
@@ -30,6 +34,10 @@ def main():
 				download_footage(f"{car}/")
 		else:
 			download_footage("")
+
+		if SYNC_LOGS:
+			for file in LOG_NAMES_TO_RSYNC:
+				rsync_log_file(file)
 
 		time.sleep(TCMConstants.SLEEP_DURATION)
 
@@ -82,7 +90,7 @@ def remove_source_file(file, folder):
 
 def list_remote_files(folder):
 	command = f"{SSH_PATH} {SERVER_CREDENTIALS} ls {SOURCE_PATH}/{folder}"
-	logger.debug(f"Executing command: {command}".format(command))
+	logger.debug(f"Executing command: {command}")
 	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	if completed.stderr or completed.returncode != 0:
@@ -90,6 +98,14 @@ def list_remote_files(folder):
 		return []
 	else:
 		return completed.stdout.split()
+
+def rsync_log_file(file):
+	command = f"{RSYNC_PATH} -e ssh {SERVER_CREDENTIALS}:{REMOTE_LOG_PATH}/{file} {TCMConstants.LOG_PATH}{file}"
+	logger.debug(f"Executing command: {command}")
+	completed = subprocess.run(command, shell=True, stdin=subprocess.DEVNULL,
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	if completed.stderr or completed.returncode != 0:
+		logger.error(f"Error running rsync command: {command}, returncode: {completed.returncode}, stdout: {completed.stdout}, stderr: {completed.stderr}")
 
 if __name__ == '__main__':
 	main()
